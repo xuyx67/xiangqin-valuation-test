@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="soft">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>相亲市场估值测试｜你在相亲市场值几分</title>
+<meta name="description" content="10 道题，算出你的相亲市场行情分。娱乐向测试，不具备心理诊断价值。">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%23BE7C8C'/%3E%3Ctext x='32' y='44' font-size='32' text-anchor='middle' fill='%23fff' font-family='serif'%3E%E5%80%BC%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://miaoda.feishu.cn">
+<link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Noto+Serif+SC:wght@400;600;700&amp;family=Noto+Sans+SC:wght@300;400;500;700&amp;family=Ma+Shan+Zheng&amp;display=swap">
+<style>
+/* ===== 基础与主题 ===== */
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+:root{
+  --maxw:712px;
+  --ease:cubic-bezier(.2,.75,.25,1);
+  --btn-radius:999px;
+  --card-radius:18px;
+  --card-shadow:0 30px 70px -48px rgba(120,70,90,.55);
+}
+html[data-theme="soft"]{
+  --bg:#FCF8F7;--card:#FFFCFB;--ink:#3A2F33;--ink-soft:#7E6C73;
+  --line:#EADCDD;--accent:#BE7C8C;--accent-ink:#8C4A5D;--accent-wash:#F5E6E9;
+  --display:"Noto Serif SC","Songti SC",serif;
+  --body:"Noto Sans SC","PingFang SC","Microsoft YaHei",sans-serif;
+  --num:"Noto Serif SC",serif;
+  --question:"Noto Serif SC",serif;
+  --glow:radial-gradient(120% 76% at 50% -8%,#F7E3E7 0%,rgba(252,248,247,0) 62%);
+  --btn-radius:999px;--card-radius:18px;
+  --card-shadow:0 30px 70px -48px rgba(120,70,90,.55);
+}
+html[data-theme="guofeng"]{
+  --bg:#F4EEDF;--card:#FCF7E9;--ink:#252D28;--ink-soft:#6E7A6D;
+  --line:#D8C9AE;--accent:#B23A2E;--accent-ink:#8A2A20;--accent-wash:#EFDED2;
+  --display:"Ma Shan Zheng","Noto Serif SC",serif;
+  --body:"Noto Serif SC","Songti SC",serif;
+  --num:"Noto Serif SC",serif;
+  --question:"Noto Serif SC",serif;
+  --glow:none;
+  --btn-radius:2px;--card-radius:3px;
+  --card-shadow:none;
+}
+html[data-theme="ins"]{
+  --bg:#FAFAF8;--card:#FFFFFF;--ink:#131313;--ink-soft:#767672;
+  --line:#DEDEDA;--accent:#002FA7;--accent-ink:#00227A;--accent-wash:#EEF1FB;
+  --display:"Noto Sans SC","Helvetica Neue",Arial,sans-serif;
+  --body:"Noto Sans SC","Helvetica Neue",Arial,sans-serif;
+  --num:"Noto Sans SC","Helvetica Neue",Arial,sans-serif;
+  --question:"Noto Sans SC","Helvetica Neue",Arial,sans-serif;
+  --glow:none;
+  --btn-radius:0px;--card-radius:0px;
+  --card-shadow:none;
+}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;min-height:100vh;
+  font-family:var(--body);color:var(--ink);background:var(--bg);
+  line-height:1.8;-webkit-font-smoothing:antialiased;
+}
+body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;background:var(--glow)}
+html[data-theme="guofeng"] body::after{
+  content:"";position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.7;
+  background-image:
+    radial-gradient(circle at 18% 26%,rgba(160,130,80,.055),transparent 42%),
+    radial-gradient(circle at 82% 72%,rgba(160,130,80,.05),transparent 46%);
+}
+::selection{background:var(--accent-wash);color:var(--ink)}
+.wrap{position:relative;z-index:1;max-width:var(--maxw);margin:0 auto;padding:0 24px 32px}
+@media (max-width:520px){.wrap{padding:0 20px 24px}}
+
+/* ===== 顶栏 ===== */
+.bar{
+  position:sticky;top:0;z-index:10;
+  display:flex;justify-content:space-between;align-items:center;gap:10px;
+  padding:16px 0 14px;
+  background:color-mix(in srgb,var(--bg) 86%,transparent);
+  backdrop-filter:blur(12px);
+}
+.brand{display:flex;align-items:center;gap:9px;min-width:0}
+.brand svg{width:19px;height:19px;flex:none;color:var(--accent)}
+.brand-t{font-size:12.5px;letter-spacing:.12em;color:var(--ink-soft);white-space:nowrap}
+.skins{display:flex;gap:2px;padding:3px;border:1px solid var(--line);border-radius:999px;background:var(--card);flex:none}
+.skins button{
+  border:0;background:none;font-family:var(--body);font-size:12px;color:var(--ink-soft);
+  padding:6px 11px;border-radius:999px;cursor:pointer;white-space:nowrap;
+  transition:background .18s,color .18s;letter-spacing:.04em;
+}
+.skins button:hover{color:var(--ink)}
+.skins button[aria-pressed="true"]{background:var(--accent);color:#fff}
+.skins button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+@media (max-width:560px){
+  .brand-t{display:none}
+  .skins button{padding:6px 9px;font-size:11.5px}
+}
+
+/* ===== 封面 ===== */
+.hero{padding:clamp(20px,6vw,54px) 0 10px}
+.kicker{margin:0 0 16px;font-size:12.5px;letter-spacing:.1em;color:var(--ink-soft)}
+h1{
+  font-family:var(--display);font-weight:600;
+  font-size:clamp(40px,9vw,80px);line-height:1.08;
+  letter-spacing:-.01em;margin:0 0 22px;
+}
+html[data-theme="guofeng"] h1{font-weight:400;line-height:1.2;letter-spacing:.02em;font-size:clamp(44px,9.8vw,86px)}
+html[data-theme="ins"] h1{font-weight:500;letter-spacing:-.03em}
+.lede{max-width:32em;margin:0 0 8px;font-size:16.5px;line-height:1.95;color:var(--ink-soft)}
+.lede + .lede{margin-top:10px}
+.line-art{margin:30px 0 28px;color:var(--accent);opacity:.6}
+.line-art svg{display:block;width:100%;height:auto}
+.cta-row{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.btn-primary{
+  font-family:var(--body);font-size:16px;font-weight:500;letter-spacing:.02em;
+  color:#fff;background:var(--accent);border:0;cursor:pointer;
+  padding:15px 32px;border-radius:var(--btn-radius);
+  transition:background .2s,transform .16s var(--ease);
+}
+.btn-primary:hover{background:var(--accent-ink)}
+.btn-primary:active{transform:translateY(1px)}
+.btn-primary:focus-visible{outline:2px solid var(--accent-ink);outline-offset:3px}
+.cta-note{font-size:13px;color:var(--ink-soft);letter-spacing:.02em}
+.tiers{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:46px 0 4px}
+.tier{border-top:1px solid var(--line);padding-top:10px}
+.tier b{display:block;font-family:var(--num);font-size:12.5px;font-weight:600;letter-spacing:.06em;color:var(--accent);margin-bottom:2px}
+.tier span{font-size:11.5px;line-height:1.6;letter-spacing:.02em;color:var(--ink-soft)}
+@media (max-width:360px){.tiers{gap:7px}.tier span{font-size:11px}}
+
+/* ===== 答题 ===== */
+.quiz{padding-top:12px}
+.q-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;font-size:12.5px;letter-spacing:.08em;color:var(--ink-soft);margin-bottom:12px}
+.q-track{height:2px;background:var(--line);margin-bottom:clamp(26px,5.5vw,42px)}
+.q-fill{height:100%;width:0;background:var(--accent);transition:width .45s var(--ease)}
+.q-text{
+  font-family:var(--question);font-size:clamp(21px,4.4vw,30px);font-weight:600;
+  line-height:1.55;letter-spacing:.01em;margin:0 0 24px;
+  text-wrap:pretty;
+}
+.options{border-bottom:1px solid var(--line);margin-bottom:20px}
+.opt{
+  display:grid;grid-template-columns:34px 1fr;align-items:start;
+  width:100%;text-align:left;font-family:var(--body);font-size:16.5px;line-height:1.7;
+  color:var(--ink);background:none;border:0;border-top:1px solid var(--line);
+  padding:17px 8px 17px 4px;cursor:pointer;
+  transition:background .18s,color .18s;
+}
+.opt:hover{background:var(--accent-wash)}
+.opt:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+.opt .k{
+  font-family:var(--num);font-size:13px;letter-spacing:.1em;color:var(--ink-soft);
+  padding-top:5px;transition:color .18s;
+}
+.opt:hover .k,.opt.picked .k{color:var(--accent)}
+.opt.picked{background:var(--accent-wash)}
+.q-back{
+  font-family:var(--body);font-size:13px;color:var(--ink-soft);background:none;border:0;
+  padding:6px 0;cursor:pointer;letter-spacing:.04em;
+}
+.q-back:hover{color:var(--accent)}
+.q-back:disabled{opacity:.35;cursor:default}
+
+/* ===== 结果卡 ===== */
+.result{padding-top:8px}
+.res-kicker{margin:0 0 16px;font-size:12.5px;letter-spacing:.1em;color:var(--ink-soft)}
+.ticket{
+  position:relative;overflow:hidden;
+  padding:clamp(22px,5.2vw,38px);
+  background:var(--card);border:1px solid var(--line);
+  border-radius:var(--card-radius);box-shadow:var(--card-shadow);
+}
+html[data-theme="guofeng"] .ticket{outline:1px solid rgba(178,58,46,.18);outline-offset:-8px}
+html[data-theme="ins"] .ticket{border-color:var(--ink)}
+html[data-theme="ins"] .ticket{padding-top:clamp(34px,7vw,52px)}
+.tk-top{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:0 0 14px 0;border-bottom:1px solid var(--line);
+  font-size:12px;letter-spacing:.14em;color:var(--ink-soft);
+}
+.tk-grade{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;margin:20px 0 2px}
+.tk-code{
+  font-family:var(--num);font-size:clamp(26px,6vw,40px);font-weight:700;
+  color:var(--accent);letter-spacing:.03em;line-height:1.2;
+}
+.tk-name{font-family:var(--display);font-size:clamp(24px,5.6vw,36px);font-weight:600;margin:0;line-height:1.35;letter-spacing:.01em}
+.tk-score{display:flex;align-items:baseline;gap:9px;margin:4px 0 6px}
+.tk-score b{font-family:var(--num);font-size:clamp(40px,11vw,68px);font-weight:700;line-height:1.1;letter-spacing:-.03em}
+.tk-score span{font-size:12.5px;letter-spacing:.1em;color:var(--ink-soft)}
+html[data-theme="ins"] .tk-score span{letter-spacing:.02em}
+.tk-scale{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin:16px 0 26px}
+.sc i{display:block;height:4px;background:var(--line);border-radius:2px;margin-bottom:6px;transition:background .3s}
+.sc span{font-size:11.5px;letter-spacing:.08em;color:var(--ink-soft)}
+.sc.on i{background:var(--accent)}
+.sc.on span{color:var(--accent);font-weight:500}
+.tk-vibe{margin:0 0 26px;font-size:16.5px;line-height:1.95;color:var(--ink);max-width:32em;text-wrap:pretty}
+.tk-quote{
+  margin:0;padding-top:22px;border-top:1px solid var(--line);
+  font-family:var(--display);font-size:clamp(17px,3.4vw,22px);line-height:1.8;
+  letter-spacing:.01em;color:var(--ink);
+}
+.tk-foot{
+  margin-top:24px;padding-top:13px;padding-right:84px;
+  border-top:1px dashed var(--line);
+  font-size:11.5px;letter-spacing:.06em;line-height:1.7;color:var(--ink-soft);
+}
+.tk-stamp{
+  position:absolute;right:clamp(14px,3.4vw,22px);bottom:clamp(14px,3.4vw,20px);
+  width:70px;height:70px;display:flex;flex-wrap:wrap;align-content:center;justify-content:center;
+  border:2px solid var(--accent);border-radius:6px;color:var(--accent);
+  font-family:var(--display);font-size:13px;line-height:1.5;
+  letter-spacing:.04em;padding:4px;transform:rotate(-9deg);opacity:.82;
+}
+.tk-stamp span{width:100%;text-align:center}
+html[data-theme="guofeng"] .tk-stamp{border-width:3px;border-radius:2px;font-size:13px;opacity:.88;width:74px;height:74px}
+html[data-theme="ins"] .tk-stamp{
+  border-width:1px;border-radius:0;transform:rotate(-4deg);
+  font-family:var(--body);letter-spacing:.14em;font-size:11px;opacity:.75;width:68px;height:68px;
+}
+
+/* ===== 结果操作 ===== */
+.res-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:22px;align-items:center}
+.btn-ghost{
+  font-family:var(--body);font-size:14.5px;color:var(--ink-soft);
+  background:none;border:1px solid var(--line);cursor:pointer;
+  padding:14px 20px;border-radius:var(--btn-radius);
+  transition:color .2s,border-color .2s;
+}
+.btn-ghost:hover{color:var(--ink);border-color:var(--ink-soft)}
+.res-hint{margin:16px 0 0;font-size:13px;line-height:1.9;color:var(--ink-soft);max-width:30em}
+
+/* ===== 页脚 ===== */
+.foot{margin-top:44px;padding-top:20px;border-top:1px solid var(--line);font-size:12px;line-height:1.95;color:var(--ink-soft)}
+.foot p{margin:0 0 8px}
+.foot .sig{letter-spacing:.1em;opacity:.75}
+
+@media (prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="bar">
+    <div class="brand">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.2c4.9 0 8.8 3.9 8.8 8.8s-3.9 8.8-8.8 8.8S3.2 16.9 3.2 12 7.1 3.2 12 3.2Z" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M8.5 9.2h7M8.5 12h7M8.5 14.8h4.4" stroke="currentColor" stroke-width="1.1" fill="none"/></svg>
+      <span class="brand-t">相亲市场估值测试</span>
+    </div>
+    <div class="skins" role="group" aria-label="切换视觉风格">
+      <button type="button" data-skin="soft" aria-pressed="true">温柔浅色</button>
+      <button type="button" data-skin="guofeng" aria-pressed="false">古风国潮</button>
+      <button type="button" data-skin="ins" aria-pressed="false">简约 ins</button>
+    </div>
+  </header>
+
+  <!-- ===== 屏一：封面 ===== -->
+  <section class="screen hero" id="screen-intro">
+    <p class="kicker">10 道题，约 2 分钟，凭第一反应选</p>
+    <h1>你在相亲市场<br>到底值几分</h1>
+    <p class="lede">相亲角比较像股市，你以为自己在挂牌，其实别人在给你估值。</p>
+    <p class="lede">不用报身高体重，也不用发存款截图。十道题，算算你的行情分，再领一张专属估值卡。</p>
+    <div class="line-art" aria-hidden="true">
+      <svg viewBox="0 0 640 96" preserveAspectRatio="none">
+        <path d="M0 78 L58 68 L116 71 L174 54 L232 60 L290 42 L348 47 L406 29 L464 34 L522 19 L580 23 L640 10" fill="none" stroke="currentColor" stroke-width="1.4"/>
+        <circle cx="640" cy="10" r="3.4" fill="currentColor"/>
+        <path d="M0 92 H640" stroke="currentColor" stroke-width=".6" opacity=".5"/>
+      </svg>
+    </div>
+    <div class="cta-row">
+      <button type="button" class="btn-primary" id="startBtn">开始估值</button>
+      <span class="cta-note">测完可截图发朋友圈</span>
+    </div>
+    <div class="tiers" aria-label="四档估值">
+      <div class="tier"><b>B</b><span>限价隐藏款</span></div>
+      <div class="tier"><b>A</b><span>潜力成长款</span></div>
+      <div class="tier"><b>S</b><span>黄金稀缺款</span></div>
+      <div class="tier"><b>SSR</b><span>顶配现货</span></div>
+    </div>
+  </section>
+
+  <!-- ===== 屏二：答题 ===== -->
+  <section class="screen quiz" id="screen-quiz" hidden>
+    <div class="q-head">
+      <span>第 <b id="qIdx">01</b> / 10 题</span>
+      <span>凭第一反应选</span>
+    </div>
+    <div class="q-track"><div class="q-fill" id="qFill"></div></div>
+    <div aria-live="polite">
+      <h2 class="q-text" id="qText"></h2>
+    </div>
+    <div class="options" id="options" role="group" aria-label="选项"></div>
+    <button type="button" class="q-back" id="backBtn">返回上一题</button>
+  </section>
+
+  <!-- ===== 屏三：结果 ===== -->
+  <section class="screen result" id="screen-result" hidden>
+    <p class="res-kicker">估值完成</p>
+    <article class="ticket" id="ticket">
+      <div class="tk-top">
+        <span>相亲市场估值单</span>
+        <span>娱乐版</span>
+      </div>
+      <div class="tk-grade">
+        <span class="tk-code" id="tkCode">—</span>
+        <h3 class="tk-name" id="tkName">—</h3>
+      </div>
+      <div class="tk-score"><b id="tkScore">0</b><span>分</span></div>
+      <div class="tk-scale" aria-hidden="true">
+        <div class="sc" data-s="B"><i></i><span>30–45</span></div>
+        <div class="sc" data-s="A"><i></i><span>46–61</span></div>
+        <div class="sc" data-s="S"><i></i><span>62–77</span></div>
+        <div class="sc" data-s="SSR"><i></i><span>78–90</span></div>
+      </div>
+      <p class="tk-vibe" id="tkVibe"></p>
+      <blockquote class="tk-quote" id="tkQuote"></blockquote>
+      <div class="tk-foot">本测试仅供娱乐，不具备心理诊断价值，请勿用于自我评价或现实决策。</div>
+      <div class="tk-stamp" aria-hidden="true"><span>仅供</span><span>娱乐</span></div>
+    </article>
+    <div class="res-actions">
+      <button type="button" class="btn-primary" id="copyBtn">复制朋友圈文案</button>
+      <button type="button" class="btn-ghost" id="againBtn">再测一次</button>
+    </div>
+    <p class="res-hint">截图上面这张卡片，配文已帮你写好，复制后直接发。分数不用解释，让他们自己来测。</p>
+  </section>
+
+  <footer class="foot">
+    <p>本测试仅供娱乐，不具备心理诊断价值。分数由选项的娱乐性计分累计得出，与任何真实婚恋市场、个人价值无关，请勿当真，更不要拿去谈判彩礼。</p>
+    <p class="sig">相亲市场估值测试 · 单页离线版 · 2026</p>
+  </footer>
+
+</div>
+
+<script>
+(function () {
+  'use strict';
+
+  /* ---------- 题库：10 题，每题 4 选项，分值仅用于娱乐计分 ---------- */
+  var QUESTIONS = [
+    { q: '相亲刚坐下，对方说「你本人比照片好看」，你的第一反应是？', o: [
+      ['笑着回「你也比照片精神」', 10],
+      ['客气点头，心里默默加减分', 7],
+      ['「照片是我妈选的，我也没办法」', 4],
+      ['反问「那你给我打几分？」', 6]
+    ]},
+    { q: '约在网红咖啡店，前面排了 40 分钟队，你会？', o: [
+      ['掏出手机换一家，附近我熟', 9],
+      ['边排边聊，反正聊天也是相处', 8],
+      ['表面微笑，心里已经在扣分', 4],
+      ['让他去排，我先找个位置坐下', 2]
+    ]},
+    { q: '结账时对方提出 AA，你的真实想法是？', o: [
+      ['正好，清爽不欠人情', 9],
+      ['无所谓，怎么舒服怎么来', 8],
+      ['有点失落，但能接受', 5],
+      ['默默把他的「诚意分」调低', 3]
+    ]},
+    { q: '对方聊起自己的工作，你完全听不懂，你会？', o: [
+      ['顺着问几个具体问题，听得挺认真', 9],
+      ['微笑点头，等他说完再聊我熟的', 7],
+      ['直接说「这块我不懂，你讲简单点」', 6],
+      ['心里开始盘算这段对话还有多久', 2]
+    ]},
+    { q: '第一次见面，你会在意对方的鞋和手表吗？', o: [
+      ['会，细节最藏不住人', 8],
+      ['扫一眼，但不影响判断', 7],
+      ['更在意他说话时的眼神', 9],
+      ['完全没注意，我在看我自己的妆', 5]
+    ]},
+    { q: '到场发现对方带了他妈一起来，你会？', o: [
+      ['淡定坐下，场面话我先说', 10],
+      ['尴尬三秒，然后礼貌应对', 7],
+      ['心里爆炸，脸上营业', 5],
+      ['找借口撤，这局我不玩了', 2]
+    ]},
+    { q: '相处三个月，对方开始「查岗式关心」，你会？', o: [
+      ['直接说清边界，能处就处', 9],
+      ['先观察一阵，看他能不能收', 8],
+      ['觉得被在乎，有点受用', 5],
+      ['立刻降温，我需要自由', 3]
+    ]},
+    { q: '朋友问「你到底想找什么样的」，你的回答是？', o: [
+      ['说得出三条硬标准', 9],
+      ['大概有方向，但看感觉', 8],
+      ['「对我好的」', 5],
+      ['「不知道，遇到再说」', 3]
+    ]},
+    { q: '有人说「你这个条件，得降降预期」，你会？', o: [
+      ['笑笑不接，我的账我自己算', 10],
+      ['回家认真想了想', 6],
+      ['有点不服，但没反驳', 5],
+      ['直接拉黑，谁给你勇气替我估价', 2]
+    ]},
+    { q: '如果这场测试真给你打分，你希望是？', o: [
+      ['高分，我要看行情', 7],
+      ['中上就行，别太招眼', 9],
+      ['随便，反正我信自己', 7],
+      ['越低越好，我想安静地单着', 4]
+    ]}
+  ];
+
+  /* ---------- 四档结果，严格对应 30–90 分区间 ---------- */
+  var RESULTS = [
+    {
+      code: 'SSR', name: '顶配现货', min: 78, max: 90,
+      vibe: '你坐下那一刻，介绍人心里已经打好了标签：这个要留给我最优质的资源。条件在线，情商在线，连拒绝都说得让人舒服。行情是你定的，不是别人给的。',
+      line: '我的相亲市场估值：SSR。不是我要价高，是货架上就这一件。'
+    },
+    {
+      code: 'S', name: '黄金稀缺款', min: 62, max: 77,
+      vibe: '你不是第一眼最抢眼的那一个，但相处两次之后，对方会突然发现自己一直在想你。稳定、耐看、越聊越舒服，是行情里最抗跌的那类。',
+      line: '估值 S 级。不涨停，但一直在涨。'
+    },
+    {
+      code: 'A', name: '潜力成长款', min: 46, max: 61,
+      vibe: '你身上有种还没被完全看见的好。不会在第一面就把底牌全亮出来，需要一点时间，也需要一个愿意多问一句的人。',
+      line: '估值 A 级，成长股。看懂的请长期持有。'
+    },
+    {
+      code: 'B', name: '限价隐藏款', min: 30, max: 45,
+      vibe: '相亲市场的 KPI，你从来没打算完成。你更在意今天吃什么、这周末去哪、这个人是不是真的有意思。分数不高，但你活得比分数自由。',
+      line: '估值 B 级。我不在行情里，我在生活里。'
+    }
+  ];
+
+  var SKIN_KEY = 'xz-valuation-skin';
+  var LETTERS = ['A', 'B', 'C', 'D'];
+
+  var state = {
+    step: 0,
+    answers: new Array(QUESTIONS.length).fill(null),
+    copy: ''
+  };
+
+  var el = {
+    intro: document.getElementById('screen-intro'),
+    quiz: document.getElementById('screen-quiz'),
+    result: document.getElementById('screen-result'),
+    qIdx: document.getElementById('qIdx'),
+    qText: document.getElementById('qText'),
+    options: document.getElementById('options'),
+    fill: document.getElementById('qFill'),
+    back: document.getElementById('backBtn'),
+    start: document.getElementById('startBtn'),
+    code: document.getElementById('tkCode'),
+    name: document.getElementById('tkName'),
+    score: document.getElementById('tkScore'),
+    vibe: document.getElementById('tkVibe'),
+    quote: document.getElementById('tkQuote'),
+    copyBtn: document.getElementById('copyBtn'),
+    again: document.getElementById('againBtn'),
+    scale: document.querySelectorAll('.sc'),
+    skinBtns: document.querySelectorAll('.skins button')
+  };
+
+  /* ---------- 皮肤 ---------- */
+  function setSkin(skin) {
+    document.documentElement.setAttribute('data-theme', skin);
+    el.skinBtns.forEach(function (b) {
+      b.setAttribute('aria-pressed', b.dataset.skin === skin ? 'true' : 'false');
+    });
+    try { localStorage.setItem(SKIN_KEY, skin); } catch (e) {}
+  }
+
+  el.skinBtns.forEach(function (b) {
+    b.addEventListener('click', function () { setSkin(b.dataset.skin); });
+  });
+
+  try {
+    var saved = localStorage.getItem(SKIN_KEY);
+    if (saved && ['soft', 'guofeng', 'ins'].indexOf(saved) > -1) setSkin(saved);
+  } catch (e) {}
+
+  /* ---------- 屏幕切换 ---------- */
+  function show(screen) {
+    el.intro.hidden = screen !== 'intro';
+    el.quiz.hidden = screen !== 'quiz';
+    el.result.hidden = screen !== 'result';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  /* ---------- 渲染题目 ---------- */
+  function renderQuestion() {
+    var q = QUESTIONS[state.step];
+    el.qIdx.textContent = String(state.step + 1).padStart(2, '0');
+    el.qText.textContent = q.q;
+    el.fill.style.width = ((state.step + 1) / QUESTIONS.length * 100) + '%';
+    el.back.disabled = state.step === 0;
+
+    el.options.innerHTML = '';
+    q.o.forEach(function (opt, i) {
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'opt' + (state.answers[state.step] === i ? ' picked' : '');
+
+      var k = document.createElement('span');
+      k.className = 'k';
+      k.textContent = LETTERS[i];
+
+      var t = document.createElement('span');
+      t.className = 't';
+      t.textContent = opt[0];
+
+      btn.appendChild(k);
+      btn.appendChild(t);
+      btn.addEventListener('click', function () { pick(i, btn); });
+      el.options.appendChild(btn);
+    });
+
+    if (!el.quiz.hidden && window.scrollY > 60) window.scrollTo({ top: 0 });
+  }
+
+  /* ---------- 选择与推进 ---------- */
+  var advancing = false;
+
+  function pick(i, btn) {
+    if (advancing) return;
+    state.answers[state.step] = i;
+
+    Array.prototype.forEach.call(el.options.children, function (c) {
+      c.classList.remove('picked');
+    });
+    btn.classList.add('picked');
+
+    advancing = true;
+    setTimeout(function () {
+      advancing = false;
+      if (state.step < QUESTIONS.length - 1) {
+        state.step += 1;
+        renderQuestion();
+      } else {
+        showResult();
+      }
+    }, 240);
+  }
+
+  el.back.addEventListener('click', function () {
+    if (state.step === 0) return;
+    state.step -= 1;
+    renderQuestion();
+  });
+
+  /* ---------- 计分 ---------- */
+  function totalScore() {
+    return state.answers.reduce(function (sum, v, i) {
+      return sum + (v == null ? 0 : QUESTIONS[i].o[v][1]);
+    }, 0);
+  }
+
+  function pickResult(score) {
+    for (var i = 0; i < RESULTS.length; i++) {
+      if (score >= RESULTS[i].min && score <= RESULTS[i].max) return RESULTS[i];
+    }
+    return RESULTS[RESULTS.length - 1];
+  }
+
+  /* ---------- 数字滚动 ---------- */
+  function animateNumber(node, target) {
+    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduce) { node.textContent = String(target); return; }
+    var t0 = performance.now(), dur = 900;
+    function tick(t) {
+      var p = Math.min(1, (t - t0) / dur);
+      var e = 1 - Math.pow(1 - p, 3);
+      node.textContent = String(Math.round(target * e));
+      if (p < 1) requestAnimationFrame(tick);
+    }
+    node.textContent = '0';
+    requestAnimationFrame(tick);
+  }
+
+  /* ---------- 结果 ---------- */
+  function showResult() {
+    var score = totalScore();
+    var r = pickResult(score);
+
+    el.code.textContent = r.code;
+    el.name.textContent = r.name;
+    el.vibe.textContent = r.vibe;
+    el.quote.textContent = r.line;
+    animateNumber(el.score, score);
+
+    el.scale.forEach(function (sc) {
+      sc.classList.toggle('on', sc.dataset.s === r.code);
+    });
+
+    state.copy = r.line + '\n（本测试仅供娱乐，不具备心理诊断价值）';
+    show('result');
+    resetCopyButton();
+  }
+
+  /* ---------- 复制 ---------- */
+  function copyText(text) {
+    if (navigator.clipboard && window.isSecureContext) {
+      return navigator.clipboard.writeText(text).then(function () { return true; }, function () { return legacyCopy(text); });
+    }
+    return Promise.resolve(legacyCopy(text));
+  }
+
+  function legacyCopy(text) {
+    try {
+      var ta = document.createElement('textarea');
+      ta.value = text;
+      ta.setAttribute('readonly', '');
+      ta.style.position = 'fixed';
+      ta.style.top = '-1000px';
+      document.body.appendChild(ta);
+      ta.select();
+      ta.setSelectionRange(0, ta.value.length);
+      var ok = document.execCommand('copy');
+      document.body.removeChild(ta);
+      return ok;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  function resetCopyButton() {
+    el.copyBtn.textContent = '复制朋友圈文案';
+    el.copyBtn.disabled = false;
+  }
+
+  el.copyBtn.addEventListener('click', function () {
+    copyText(state.copy).then(function (ok) {
+      el.copyBtn.textContent = ok ? '已复制，去发朋友圈' : '长按上方短句手动复制';
+      setTimeout(resetCopyButton, 2000);
+    });
+  });
+
+  /* ---------- 开始与重测 ---------- */
+  function startQuiz() {
+    state.step = 0;
+    state.answers = new Array(QUESTIONS.length).fill(null);
+    renderQuestion();
+    show('quiz');
+  }
+
+  el.start.addEventListener('click', startQuiz);
+  el.again.addEventListener('click', startQuiz);
+
+  renderQuestion();
+})();
+</script>
+</body>
+</html>
