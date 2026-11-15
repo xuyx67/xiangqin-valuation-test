@@ -231,12 +231,56 @@ html[data-theme="ins"] .tk-stamp{
 .foot p{margin:0 0 8px}
 .foot .sig{letter-spacing:.1em;opacity:.75}
 
+/* ===== 访问口令门 ===== */
+body.locked .wrap{display:none}
+.gate{
+  position:fixed;inset:0;z-index:60;display:flex;align-items:center;justify-content:center;
+  padding:24px;background:var(--bg);
+}
+body:not(.locked) .gate{display:none}
+.gate-card{
+  width:100%;max-width:356px;padding:34px 26px 30px;text-align:center;
+  background:var(--card);border:1px solid var(--line);
+  border-radius:var(--card-radius);box-shadow:var(--card-shadow);
+}
+.gate-card svg{width:26px;height:26px;color:var(--accent);margin:0 auto 14px;display:block}
+.gate-k{margin:0 0 18px;font-size:12.5px;letter-spacing:.14em;color:var(--ink-soft)}
+.gate-input{
+  width:100%;padding:12px 6px;text-align:center;
+  font-family:var(--num);font-size:26px;letter-spacing:.28em;
+  color:var(--ink);background:transparent;
+  border:1px solid var(--line);border-radius:8px;outline:none;
+  transition:border-color .2s;
+}
+.gate-input::placeholder{font-size:14px;letter-spacing:.1em;color:var(--ink-soft)}
+.gate-input:focus{border-color:var(--accent)}
+.gate-btn{
+  width:100%;margin-top:16px;padding:14px 0;border:0;cursor:pointer;
+  font-family:var(--body);font-size:15.5px;letter-spacing:.02em;color:#fff;
+  background:var(--accent);border-radius:var(--btn-radius);
+  transition:background .2s;
+}
+.gate-btn:hover{background:var(--accent-ink)}
+.gate-msg{margin:14px 0 0;min-height:20px;font-size:12.5px;line-height:1.7;color:var(--ink-soft)}
+.gate-msg.gate-err{color:var(--accent-ink)}
+html[data-theme="ins"] .gate-input{border-color:var(--ink)}
+
 @media (prefers-reduced-motion:reduce){
   *{animation:none!important;transition:none!important}
 }
 </style>
 </head>
-<body>
+<body class="locked">
+
+<div class="gate" id="gate">
+  <div class="gate-card">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4.6" y="10.4" width="14.8" height="9.6" rx="2.2" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M8.2 10.2V7.6a3.8 3.8 0 0 1 7.6 0v2.6" fill="none" stroke="currentColor" stroke-width="1.3"/><circle cx="12" cy="15.2" r="1.5" fill="currentColor"/></svg>
+    <p class="gate-k">请输入访问口令</p>
+    <input class="gate-input" id="gateInput" type="text" inputmode="numeric" maxlength="8" autocomplete="off" placeholder="4 位数字" aria-label="访问口令">
+    <button class="gate-btn" id="gateBtn" type="button">进入测试</button>
+    <p class="gate-msg" id="gateMsg">口令由卖家在发货时一并提供，仅限本人使用。</p>
+  </div>
+</div>
 <div class="wrap">
 
   <header class="bar">
@@ -327,6 +371,64 @@ html[data-theme="ins"] .tk-stamp{
   </footer>
 
 </div>
+
+<script>
+/* ===== 访问口令门：服务端不可用，此处为前端校验，仅防误点与随手转发 ===== */
+(function () {
+  'use strict';
+  var PWD_HASH = '8f53486c18c47c635434edd8da34ca0ad873a707ddf49f2ba0edf5b186c2d0cc'; // sha256("口令|xiangqin-valuation")
+  var STORE_KEY = 'xz-gate-v1';
+  var body = document.body;
+  var input = document.getElementById('gateInput');
+  var btn = document.getElementById('gateBtn');
+  var msg = document.getElementById('gateMsg');
+  var busy = false;
+
+  try {
+    if (localStorage.getItem(STORE_KEY) === '1') { body.classList.remove('locked'); return; }
+  } catch (e) {}
+
+  function unlock() {
+    body.classList.remove('locked');
+    try { localStorage.setItem(STORE_KEY, '1'); } catch (e) {}
+  }
+
+  function fail(text) {
+    msg.textContent = text;
+    msg.classList.add('gate-err');
+    input.select();
+  }
+
+  function digest(text) {
+    return crypto.subtle.digest('SHA-256', new TextEncoder().encode(text)).then(function (buf) {
+      var out = '';
+      new Uint8Array(buf).forEach(function (b) { out += b.toString(16).padStart(2, '0'); });
+      return out;
+    });
+  }
+
+  function attempt() {
+    if (busy) return;
+    var v = input.value.trim();
+    if (!v) { fail('请先输入口令'); return; }
+    if (!window.crypto || !crypto.subtle) { fail('当前浏览器不支持口令校验，请换 Chrome 或 Safari 打开'); return; }
+    busy = true;
+    msg.classList.remove('gate-err');
+    msg.textContent = '正在校验…';
+    digest(v + '|xiangqin-valuation').then(function (h) {
+      busy = false;
+      if (h === PWD_HASH) { unlock(); } else { fail('口令不对，请核对购买时收到的 4 位口令'); }
+    }).catch(function () {
+      busy = false;
+      fail('校验失败，请刷新页面后重试');
+    });
+  }
+
+  btn.addEventListener('click', attempt);
+  input.addEventListener('keydown', function (e) { if (e.key === 'Enter') attempt(); });
+  if (window.matchMedia('(min-width: 480px)').matches) input.focus();
+})();
+</script>
 
 <script>
 (function () {
